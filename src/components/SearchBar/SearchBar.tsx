@@ -2,13 +2,16 @@ import styles from "./SearchBar.module.css";
 import { toast, Toaster } from "react-hot-toast";
 import { FormEvent } from "react";
 import { CiSearch } from "react-icons/ci";
+import { SearchBarProps } from "./SearchBar.types";
 
-const SearchBar = ({ onSubmit }) => {
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+const SearchBar = ({ onSubmit }: SearchBarProps) => {
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>): void => {
     evt.preventDefault();
-    const form = evt.target;
-    const value = form.elements.text.value.trim();
-    if (value === "") {
+    const form = evt.currentTarget;
+    const input = form.elements.namedItem("text") as HTMLInputElement;
+    const value = input?.value.trim();
+
+    if (!value) {
       toast.error("This is an invalid request. Try again!");
       return;
     } else {
