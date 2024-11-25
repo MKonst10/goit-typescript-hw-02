@@ -1,9 +1,10 @@
 import Modal from "react-modal";
 import styles from "./ImageModal.module.css";
 import { useEffect } from "react";
+import { ImageModalProps } from "./ImageModal.types";
 
 Modal.setAppElement("#root");
-const ImageModal = ({ data, isOpen, closeModal }) => {
+const ImageModal = ({ data, isOpen, closeModal }: ImageModalProps) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";

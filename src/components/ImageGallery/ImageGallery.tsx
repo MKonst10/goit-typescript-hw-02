@@ -1,10 +1,13 @@
-import { forwardRef } from "react";
+import { ForwardedRef, forwardRef } from "react";
 import ImageCard from "../ImageCard/ImageCard";
 import styles from "./ImageGallery.module.css";
 import { ImageGalleryProps } from "./ImageGallery.types";
 
 const ImageGallery = forwardRef(
-  ({ images, openModal }: ImageGalleryProps, ref) => {
+  (
+    { images, openModal }: ImageGalleryProps,
+    ref: ForwardedRef<HTMLImageElement>
+  ) => {
     return (
       <div className={styles.galleryWrap}>
         <ul className={styles.gallery}>
