@@ -8,7 +8,7 @@ const ImageCard = forwardRef(({ data, openModal }, ref) => {
         className={styles.image}
         src={data.urls.small}
         alt={data.alt_description}
-        onClick={() => openModal(data)}
+        onClick={(): void => openModal(data)}
         ref={ref}
       />
     </div>

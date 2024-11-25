@@ -8,20 +8,24 @@ import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import Loader from "./components/Loader/Loader";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
+import { Image } from "./types";
+import { fetchImages } from "./fetchImages-api";
 
 function App() {
-  const imgRef = useRef(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
-  const [search, setSearch] = useState("");
-  const [images, setImages] = useState([]);
-  const [error, setError] = useState(null);
-  const [loader, setLoader] = useState(false);
-  const [page, setPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [totalPages, setTotalPages] = useState(null);
+  const [search, setSearch] = useState<string>("");
+  const [images, setImages] = useState<Image[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loader, setLoader] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<Partial<Image> | null>(
+    null
+  );
+  const [totalPages, setTotalPages] = useState<number>(0);
 
-  const handleSubmit = (value) => {
+  const handleSubmit = (value: string): void => {
     setSearch(value);
     setImages([]);
     setPage(1);
@@ -31,23 +35,13 @@ function App() {
     if (search === "") return;
 
     const fetchPhotos = async () => {
-      const fetchParams = new URLSearchParams({
-        client_id: "rROOcxrgaSvz3J-ktRZ3eDl9Nmsulij0vEhZYe94i1A",
-        query: search,
-        per_page: 12,
-        page: page,
-        orientation: "landscape",
-      });
-
       try {
         setLoader(true);
-        const { data } = await axios.get(
-          `https://api.unsplash.com/search/photos/?${fetchParams}`
-        );
-        console.log(data);
+        const data = await fetchImages(search, page);
         setTotalPages(data.total_pages);
         console.log(totalPages);
 
+        const imgResults: Image[] = data.results;
         if (data.results.length === 0) {
           setImages(data.results);
           return toast(
@@ -58,7 +52,9 @@ function App() {
         }
       } catch (error) {
         console.log(error);
-        setError(error.message);
+        if (error instanceof Error) {
+          setError(error.message);
+        }
       } finally {
         setLoader(false);
       }
@@ -76,12 +72,12 @@ function App() {
     }
   }, []);
 
-  const handleChangePage = () => {
+  const handleChangePage = (): void => {
     setPage((prevPage) => prevPage + 1);
   };
 
   useEffect(() => {
-    if (page > 1) {
+    if (page > 1 && imgRef.current) {
       const cardHeight = imgRef.current.getBoundingClientRect().height;
       scrollBy({
         top: cardHeight * 3,
@@ -90,15 +86,15 @@ function App() {
     }
   }, [images]);
 
-  const openModal = (image) => {
+  const openModal = (image: Image): void => {
     setSelectedImage(image);
     setIsModalOpen(true);
   };
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = (): void => setIsModalOpen(false);
 
   return (
     <>
-      <SearchBar onSubmit={handleSubmit} value={search} onSearch={setSearch} />
+      <SearchBar onSubmit={handleSubmit} />
       {images !== null && (
         <ImageGallery images={images} openModal={openModal} ref={imgRef} />
       )}
