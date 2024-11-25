@@ -1,4 +1,6 @@
-const ErrorMessage = ({ error }) => {
+import { ErrorMessageProps } from "./ErrorMessage.types";
+
+const ErrorMessage = ({ error }: ErrorMessageProps) => {
   return (
     <div>
       <p>
