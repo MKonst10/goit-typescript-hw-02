@@ -26,7 +26,7 @@ const ImageModal = ({ data, isOpen, closeModal }: ImageModalProps) => {
         shouldCloseOnOverlayClick={true}
         overlayClassName={styles.overlay}
       >
-        <img src={data.urls.regular} alt={data.alt_description} />
+        <img src={data.urls?.regular} alt={data.alt_description} />
       </Modal>
     </div>
   );

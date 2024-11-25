@@ -1,7 +1,7 @@
 import { Image } from "../../types";
 
 export type ImageModalProps = {
-  data: Image;
+  data: Partial<Image>;
   isOpen: boolean;
   closeModal: () => void;
 };
