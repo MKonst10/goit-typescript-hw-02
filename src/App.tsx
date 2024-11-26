@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import SearchBar from "./components/SearchBar/SearchBar";
-import axios from "axios";
 import toast from "react-hot-toast";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
